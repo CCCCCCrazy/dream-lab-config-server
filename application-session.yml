@@ -80,6 +80,18 @@ spring:
     protocol: smtp
     fromMail:
       addr: jack_official@126.com
+      
+eureka:
+  instance:
+    prefer-ip-address:  false  #不将自己的ip地址注册到Eureka服务中，而是使用主机名
+    ip-address: 127.0.0.1
+    instance-id: session-8101 #指定实例id
+    hostname: session-8101.com #eureka实例的主机名
+  client:
+    register-with-eureka: true #把eureka注册进注册中心
+    fetch-registry: true #获取注册信息
+    service-url:
+      defaultZone: http://eureka-8001.com:8001/eureka,http://eureka-8002.com:8002/eureka #此处用驼峰格式
 ---
 spring:
   profiles: test
