@@ -80,3 +80,8 @@ spring:
     protocol: smtp
     fromMail:
       addr: jack_official@126.com
+---
+spring:
+  profiles: test
+  application:
+    name: session
