@@ -1,19 +1,87 @@
 spring:
-    profiles:
-        active:
-            - dev
+  profiles:
+    active:
+      - dev
 ---
 spring:
-    profiles: dev
-    application:
-        name: session
----
-spring:
-    profiles: test
-    application:
-        name: test
----
-spring:
-    profiles: prod
-    application:
-        name: prod
+  profiles: dev
+  application:
+    name: session
+  
+  http:
+    encoding:
+      charset: utf-8
+      enabled: true
+      
+  devtools:
+    restart:
+      exclude: resources/node_modules/**
+      enabled: true
+      poll-interval: 1000
+      quiet-period: 400
+  
+  datasource:
+    #    druid数据源配置,加上serverTimezone=UTC解决数据库连接时的时区错误
+    url: jdbc:mysql://47.100.245.213:3306/dream_lab_session?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver #需要导入相关依赖，见POM
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    #   数据源其他配置
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+    # 自定义初始化脚本位置
+    schema:
+      - classpath:/sql/*
+    max-idle: 10
+
+  redis:
+    host: 47.100.245.213
+    port: 6379
+
+  rabbitmq:
+    host: 47.100.245.213
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    listener:
+      simple:
+        retry:
+          enabled: false
+          # 开启消费者手动确认 ACK 默认auto
+        acknowledge-mode: manual
+    template:
+      retry:
+        enabled: false
+      #        生产者发送成功消息确认
+      mandatory: true
+    #      生产者发送成功消息确认
+    publisher-confirms: true
+    #    生产者消息发送失败退回
+    publisher-returns: true
+
+  mail:
+    #    220.181.15.112
+    host: smtp.126.com
+    port: 25
+    username: jack_official@126.com
+    password: jack123456789
+    default-encoding: UTF-8
+    protocol: smtp
+    fromMail:
+      addr: jack_official@126.com
