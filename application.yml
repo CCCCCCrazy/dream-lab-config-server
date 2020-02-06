@@ -1,21 +1,21 @@
 
 spring:
-  profiles:
-    active:
-    - dev
+    profiles:
+        active:
+            - dev
 
 ---
 spring:
-  profiles: dev
-  application:
-    name: session
+    profiles: dev
+        application:
+            name: session
 ---
 spring:
-  profiles: test
-  application:
-    name: test
+    profiles: test
+        application:
+            name: test
 ---
 spring:
-  profiles: prod
-  application:
-    name: prod
+    profiles: prod
+        application:
+            name: prod
